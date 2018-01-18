@@ -83,7 +83,6 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-
         $coupons->addType('allDiscount', function($discount, array $items) {
             // not needed for the test
         }, [
@@ -98,6 +97,73 @@ class SenderTest extends BearFrameworkAddonTestCase
         $coupons->save($coupon);
 
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Starts at April 5, 2018. Ends at June 7, 2018.');
+    }
+
+    /**
+     * 
+     */
+    public function testIsValid()
+    {
+        $app = $this->getApp();
+        $coupons = $app->coupons;
+
+        $coupons->addType('allDiscount', function($discount, array $items) {
+            // not needed for the test
+        });
+
+        $coupon = $coupons->make('allDiscount', '20%');
+        $coupon->startDate = time() + 2;
+        $coupon->endDate = time() + 5;
+        $coupons->save($coupon);
+        $couponID = $coupon->id;
+
+        $this->assertFalse($coupons->isValid($couponID));
+        sleep(2);
+        $this->assertTrue($coupons->isValid($couponID));
+        sleep(5);
+        $this->assertFalse($coupons->isValid($couponID));
+    }
+
+    /**
+     * 
+     */
+    public function testUsageLimit()
+    {
+        $app = $this->getApp();
+        $coupons = $app->coupons;
+
+        $coupons->addType('allDiscount', function($discount, array $items) {
+            // not needed for the test
+        });
+
+        $coupon = $coupons->make('allDiscount', '20%');
+        $coupon->usageLimit = 2;
+        $coupons->save($coupon);
+        $couponID = $coupon->id;
+
+        $this->assertTrue($coupons->isValid($couponID));
+        $coupons->markAsUsed($couponID);
+        $this->assertTrue($coupons->isValid($couponID));
+        $coupons->markAsUsed($couponID);
+        $this->assertFalse($coupons->isValid($couponID));
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidCoupon()
+    {
+        $app = $this->getApp();
+        $coupons = $app->coupons;
+
+        $coupons->addType('allDiscount', function($discount, array $items) {
+            // not needed for the test
+        });
+
+        $coupon = $coupons->make('allDiscount', '20%');
+        $coupons->save($coupon);
+
+        $this->assertFalse($coupons->isValid('INVALID'));
     }
 
 }

@@ -100,14 +100,12 @@ class Coupons
                 }
             }
             if (strlen($coupon->startDate) > 0) {
-                $dateTime = new \DateTime($coupon->startDate);
-                if (time() < $dateTime->startDate) {
+                if (time() < (int) $coupon->startDate) {
                     return false;
                 }
             }
             if (strlen($coupon->endDate) > 0) {
-                $dateTime = new \DateTime($coupon->endDate);
-                if (time() > $dateTime->endDate) {
+                if (time() > (int) $coupon->endDate) {
                     return false;
                 }
             }
