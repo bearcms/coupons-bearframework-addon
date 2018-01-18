@@ -13,8 +13,8 @@ namespace BearCMS\BearFrameworkAddons\Coupons;
  * @property ?string $id
  * @property ?string $typeID
  * @property ?string $discount
- * @property ?string $startDate
- * @property ?string $endDate
+ * @property ?int $startDate
+ * @property ?int $endDate
  * @property ?int $usageLimit
  * @property ?int $usageCount
  */
@@ -37,10 +37,10 @@ class Coupon
             'type' => '?string'
         ]);
         $this->defineProperty('startDate', [
-            'type' => '?string'
+            'type' => '?int'
         ]);
         $this->defineProperty('endDate', [
-            'type' => '?string'
+            'type' => '?int'
         ]);
         $this->defineProperty('usageLimit', [
             'type' => '?int'

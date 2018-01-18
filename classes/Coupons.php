@@ -20,9 +20,9 @@ class Coupons
     private $cache = [];
     private $types = [];
 
-    public function addType(string $id, callable $calculator)
+    public function addType(string $id, callable $calculator, array $options = [])
     {
-        $this->types[$id] = [$calculator];
+        $this->types[$id] = [$calculator, $options];
     }
 
     public function make(string $typeID = null, string $discount = null): \BearCMS\BearFrameworkAddons\Coupons\Coupon
@@ -118,6 +118,36 @@ class Coupons
 
     /**
      * 
+     * @param string $couponID
+     */
+    public function getDescription(string $couponID): string
+    {
+        $app = App::get();
+        $description = '';
+        $coupon = $this->get($couponID);
+        if ($coupon !== null) {
+            $typeID = $coupon->typeID;
+            if (isset($this->types[$typeID], $this->types[$typeID][1]['description'])) {
+                $description = $this->types[$typeID][1]['description'];
+                if (is_callable($description)) {
+                    $description = call_user_func($description, $coupon);
+                }
+            }
+            $description = trim((string) $description);
+            $description = strlen($description) > 0 ? [$description] : [];
+            if (strlen($coupon->startDate) > 0) {
+                $description[] = sprintf(__('coupons.Starts at'), $app->localization->formatDate($coupon->startDate, ['date']));
+            }
+            if (strlen($coupon->endDate) > 0) {
+                $description[] = sprintf(__('coupons.Ends at'), $app->localization->formatDate($coupon->endDate, ['date']));
+            }
+            $description = implode(' ', $description);
+        }
+        return $description;
+    }
+
+    /**
+     * 
      * @param array $items Format: [['id'=>'item1', 'target'=>'target1', 'value'=>10], ...]
      */
     public function getDiscount(array $couponIDs, array $items): array
@@ -127,11 +157,13 @@ class Coupons
         foreach ($couponIDs as $couponID) {
             if ($this->exists($couponID) && $this->isValid($couponID)) {
                 $coupon = $this->get($couponID);
-                $typeID = $coupon->typeID;
-                if (isset($this->types[$typeID])) {
-                    $calculators[] = [$coupon->discount, $this->types[$typeID][0]];
+                if ($coupon !== null) {
+                    $typeID = $coupon->typeID;
+                    if (isset($this->types[$typeID])) {
+                        $calculators[] = [$coupon->discount, $this->types[$typeID][0]];
+                    }
+                    $coupons[] = $coupon;
                 }
-                $coupons[] = $coupon;
             }
         }
         $discounts = [];

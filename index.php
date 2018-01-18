@@ -20,3 +20,11 @@ $app->shortcuts
         ->add('coupons', function() {
             return new \BearCMS\BearFrameworkAddons\Coupons();
         });
+
+$app->localization
+        ->addDictionary('en', function() use ($context) {
+            return include $context->dir . '/locales/en.php';
+        })
+        ->addDictionary('bg', function() use ($context) {
+            return include $context->dir . '/locales/bg.php';
+        });

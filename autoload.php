@@ -7,4 +7,8 @@
  * Free to use under the MIT license.
  */
 
-BearFramework\Addons::register('bearcms/coupons-bearframework-addon', __DIR__);
+BearFramework\Addons::register('bearcms/coupons-bearframework-addon', __DIR__, [
+    'require' => [
+        'bearframework/localization-addon'
+    ]
+]);

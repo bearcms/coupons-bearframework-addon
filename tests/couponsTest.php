@@ -75,4 +75,29 @@ class SenderTest extends BearFrameworkAddonTestCase
         ]);
     }
 
+    /**
+     * 
+     */
+    public function testDescription()
+    {
+        $app = $this->getApp();
+        $coupons = $app->coupons;
+
+
+        $coupons->addType('allDiscount', function($discount, array $items) {
+            // not needed for the test
+        }, [
+            'description' => function($coupon) {
+                return $coupon->discount . ' off everything!';
+            }
+        ]);
+
+        $coupon = $coupons->make('allDiscount', '20%');
+        $coupon->startDate = mktime(1, 2, 3, 4, 5, 2018);
+        $coupon->endDate = mktime(1, 2, 3, 6, 7, 2018);
+        $coupons->save($coupon);
+
+        $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Starts at April 5, 2018. Ends at June 7, 2018.');
+    }
+
 }

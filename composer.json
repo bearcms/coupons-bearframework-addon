@@ -14,6 +14,7 @@
     "require": {
         "php": ">=7.1",
         "bearframework/bearframework": "0.10.*",
+        "bearframework/localization-addon": "0.2.*",
         "ivopetkov/data-object": "0.5.*"
     },
     "require-dev": {
