@@ -81,11 +81,16 @@ class Coupons
         return null;
     }
 
-    public function markAsUsed($id)
+    public function markAsUsed($id, $context = null)
     {
         $coupon = $this->get($id);
         if ($coupon instanceof \BearCMS\BearFrameworkAddons\Coupons\Coupon) {
-            $coupon->usageCount = (int) $coupon->usageCount + 1;
+            $usage = $coupon->usage;
+            $usage[] = [
+                'date' => time(),
+                'context' => $context
+            ];
+            $coupon->usage = $usage;
             $this->save($coupon);
         }
     }
@@ -94,8 +99,8 @@ class Coupons
     {
         $coupon = $this->get($id);
         if ($coupon instanceof \BearCMS\BearFrameworkAddons\Coupons\Coupon) {
-            if (is_int($coupon->usageCount) && is_int($coupon->usageLimit)) {
-                if ($coupon->usageCount >= $coupon->usageLimit) {
+            if (is_int($coupon->usageLimit)) {
+                if (sizeof($coupon->usage) >= $coupon->usageLimit) {
                     return false;
                 }
             }
@@ -158,7 +163,7 @@ class Coupons
                 if ($coupon !== null) {
                     $typeID = $coupon->typeID;
                     if (isset($this->types[$typeID])) {
-                        $calculators[] = [$coupon->discount, $this->types[$typeID][0]];
+                        $calculators[] = [$coupon, $this->types[$typeID][0]];
                     }
                     $coupons[] = $coupon;
                 }

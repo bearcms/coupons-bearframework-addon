@@ -16,7 +16,8 @@ namespace BearCMS\BearFrameworkAddons\Coupons;
  * @property ?int $startDate
  * @property ?int $endDate
  * @property ?int $usageLimit
- * @property ?int $usageCount
+ * @property array $usage
+ * @property mixed $context
  */
 class Coupon
 {
@@ -45,9 +46,10 @@ class Coupon
         $this->defineProperty('usageLimit', [
             'type' => '?int'
         ]);
-        $this->defineProperty('usageCount', [
-            'type' => '?int'
+        $this->defineProperty('usage', [
+            'type' => 'array'
         ]);
+        $this->defineProperty('context');
     }
 
 }

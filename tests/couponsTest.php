@@ -41,12 +41,12 @@ class SenderTest extends BearFrameworkAddonTestCase
         };
 
 
-        $coupons->addType('discountFruits', function($discount, array $items) use ($percentDiscountByType) {
-            return $percentDiscountByType('fruit', $discount, $items);
+        $coupons->addType('discountFruits', function($coupon, array $items) use ($percentDiscountByType) {
+            return $percentDiscountByType('fruit', $coupon->discount, $items);
         });
 
-        $coupons->addType('discountVegetables', function($discount, array $items) use ($percentDiscountByType) {
-            return $percentDiscountByType('vegetable', $discount, $items);
+        $coupons->addType('discountVegetables', function($coupon, array $items) use ($percentDiscountByType) {
+            return $percentDiscountByType('vegetable', $coupon->discount, $items);
         });
 
         $couponIDs = [];
@@ -83,7 +83,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($discount, array $items) {
+        $coupons->addType('allDiscount', function($coupon, array $items) {
             // not needed for the test
         }, [
             'description' => function($coupon) {
@@ -107,7 +107,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($discount, array $items) {
+        $coupons->addType('allDiscount', function($coupon, array $items) {
             // not needed for the test
         });
 
@@ -132,7 +132,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($discount, array $items) {
+        $coupons->addType('allDiscount', function($coupon, array $items) {
             // not needed for the test
         });
 
@@ -156,7 +156,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($discount, array $items) {
+        $coupons->addType('allDiscount', function($coupon, array $items) {
             // not needed for the test
         });
 
