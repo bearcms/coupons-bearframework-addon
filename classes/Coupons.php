@@ -54,20 +54,23 @@ class Coupons
             for ($i = 0; $i < 10; $i++) {
                 $id .= str_replace(['x', 'o'], [rand(0, 9), rand(0, 9)], base_convert(rand(1000000, 9999999), 10, 36));
             }
-            $id = strrev(implode('-', array_chunk(str_split(strtoupper($id), 6), 5)[0]));
+            $id = strrev(implode('-', array_chunk(str_split($id, 6), 5)[0]));
             $coupon->id = $id;
         }
+        $coupon->id = strtolower($coupon->id);
         $app->data->set($app->data->make($this->getDataKey($coupon->id), $coupon->toJSON()));
     }
 
     public function exists(string $id): bool
     {
+        $id = strtolower($id);
         $app = App::get();
         return $app->data->exists($this->getDataKey($id));
     }
 
     public function get(string $id): ?\BearCMS\BearFrameworkAddons\Coupons\Coupon
     {
+        $id = strtolower($id);
         $app = App::get();
         $rawData = $app->data->getValue($this->getDataKey($id));
         if (strlen($rawData) > 0) {
@@ -83,6 +86,7 @@ class Coupons
 
     public function markAsUsed($id, $context = null)
     {
+        $id = strtolower($id);
         $coupon = $this->get($id);
         if ($coupon instanceof \BearCMS\BearFrameworkAddons\Coupons\Coupon) {
             $usage = $coupon->usage;
@@ -97,6 +101,7 @@ class Coupons
 
     public function isValid($id): bool
     {
+        $id = strtolower($id);
         $coupon = $this->get($id);
         if ($coupon instanceof \BearCMS\BearFrameworkAddons\Coupons\Coupon) {
             if (is_int($coupon->usageLimit)) {
@@ -125,6 +130,7 @@ class Coupons
      */
     public function getDescription(string $couponID): string
     {
+        $couponID = strtolower($couponID);
         $app = App::get();
         $description = '';
         $coupon = $this->get($couponID);
@@ -138,11 +144,24 @@ class Coupons
             }
             $description = trim((string) $description);
             $description = strlen($description) > 0 ? [$description] : [];
-            if (strlen($coupon->startDate) > 0) {
-                $description[] = sprintf(__('coupons.Starts at'), $app->localization->formatDate($coupon->startDate, ['date']));
+
+            if ($coupon->usageLimit > 0) {
+                if ($coupon->usageLimit === 1) {
+                    $description[] = __('bearcms.bearframeworkaddons.coupons.UsageLimitOne');
+                } else {
+                    $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.UsageLimitMoreThanOne'), $coupon->usageLimit);
+                }
             }
-            if (strlen($coupon->endDate) > 0) {
-                $description[] = sprintf(__('coupons.Ends at'), $app->localization->formatDate($coupon->endDate, ['date']));
+
+            if (strlen($coupon->startDate) > 0 && strlen($coupon->endDate) > 0) {
+                $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.Period'), $app->localization->formatDate($coupon->startDate, ['date']), $app->localization->formatDate($coupon->endDate, ['date']));
+            } else {
+                if (strlen($coupon->startDate) > 0) {
+                    $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.StartDate'), $app->localization->formatDate($coupon->startDate, ['date']));
+                }
+                if (strlen($coupon->endDate) > 0) {
+                    $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.EndDate'), $app->localization->formatDate($coupon->endDate, ['date']));
+                }
             }
             $description = implode(' ', $description);
         }
@@ -158,6 +177,7 @@ class Coupons
         $coupons = [];
         $calculators = [];
         foreach ($couponIDs as $couponID) {
+            $couponID = strtolower($couponID);
             if ($this->exists($couponID) && $this->isValid($couponID)) {
                 $coupon = $this->get($couponID);
                 if ($coupon !== null) {
@@ -184,6 +204,11 @@ class Coupons
             }
         }
         return $discounts;
+    }
+
+    public function getList()
+    {
+        //todo
     }
 
 }
