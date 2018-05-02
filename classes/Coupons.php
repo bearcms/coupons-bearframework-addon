@@ -25,7 +25,7 @@ class Coupons
         $this->types[$id] = [$calculator, $options];
     }
 
-    public function make(string $typeID = null, string $discount = null): \BearCMS\BearFrameworkAddons\Coupons\Coupon
+    public function make(string $typeID = null, string $value = null): \BearCMS\BearFrameworkAddons\Coupons\Coupon
     {
         if (!isset($this->cache['coupon'])) {
             $this->cache['coupon'] = new \BearCMS\BearFrameworkAddons\Coupons\Coupon();
@@ -34,8 +34,8 @@ class Coupons
         if ($typeID !== null) {
             $coupon->typeID = $typeID;
         }
-        if ($discount !== null) {
-            $coupon->discount = $discount;
+        if ($value !== null) {
+            $coupon->value = $value;
         }
         return $coupon;
     }

@@ -42,11 +42,11 @@ class SenderTest extends BearFrameworkAddonTestCase
 
 
         $coupons->addType('discountFruits', function($coupon, array $items) use ($percentDiscountByType) {
-            return $percentDiscountByType('fruit', $coupon->discount, $items);
+            return $percentDiscountByType('fruit', $coupon->value, $items);
         });
 
         $coupons->addType('discountVegetables', function($coupon, array $items) use ($percentDiscountByType) {
-            return $percentDiscountByType('vegetable', $coupon->discount, $items);
+            return $percentDiscountByType('vegetable', $coupon->value, $items);
         });
 
         $couponIDs = [];
@@ -87,7 +87,7 @@ class SenderTest extends BearFrameworkAddonTestCase
             // not needed for the test
         }, [
             'description' => function($coupon) {
-                return $coupon->discount . ' off everything!';
+                return $coupon->value . ' off everything!';
             }
         ]);
 
