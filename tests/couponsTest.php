@@ -40,14 +40,17 @@ class SenderTest extends BearFrameworkAddonTestCase
             return $result;
         };
 
+        $coupons->addType('discountFruits', [
+            'discountCalculator' => function($coupon, array $items) use ($percentDiscountByType) {
+                return $percentDiscountByType('fruit', $coupon->value, $items);
+            }
+        ]);
 
-        $coupons->addType('discountFruits', function($coupon, array $items) use ($percentDiscountByType) {
-            return $percentDiscountByType('fruit', $coupon->value, $items);
-        });
-
-        $coupons->addType('discountVegetables', function($coupon, array $items) use ($percentDiscountByType) {
-            return $percentDiscountByType('vegetable', $coupon->value, $items);
-        });
+        $coupons->addType('discountVegetables', [
+            'discountCalculator' => function($coupon, array $items) use ($percentDiscountByType) {
+                return $percentDiscountByType('vegetable', $coupon->value, $items);
+            }
+        ]);
 
         $couponIDs = [];
 
@@ -83,9 +86,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($coupon, array $items) {
-            // not needed for the test
-        }, [
+        $coupons->addType('allDiscount', [
             'description' => function($coupon) {
                 return $coupon->value . ' off everything!';
             }
@@ -130,9 +131,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($coupon, array $items) {
-            // not needed for the test
-        });
+        $coupons->addType('allDiscount');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->startDate = time() + 2;
@@ -155,9 +154,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($coupon, array $items) {
-            // not needed for the test
-        });
+        $coupons->addType('allDiscount');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->usageLimit = 2;
@@ -179,9 +176,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $coupons->addType('allDiscount', function($coupon, array $items) {
-            // not needed for the test
-        });
+        $coupons->addType('allDiscount');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupons->save($coupon);

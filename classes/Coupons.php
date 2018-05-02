@@ -23,12 +23,11 @@ class Coupons
     /**
      * 
      * @param string $id
-     * @param \BearCMS\BearFrameworkAddons\callable $calculator
-     * @param array $options
+     * @param array $options Available values: description=>string|callable, discountCalculator=>callable
      */
-    public function addType(string $id, callable $calculator, array $options = []): void
+    public function addType(string $id, array $options = []): void
     {
-        $this->types[$id] = [$calculator, $options];
+        $this->types[$id] = $options;
     }
 
     /**
@@ -167,8 +166,8 @@ class Coupons
         $coupon = $this->get($couponID);
         if ($coupon !== null) {
             $typeID = $coupon->typeID;
-            if (isset($this->types[$typeID], $this->types[$typeID][1]['description'])) {
-                $description = $this->types[$typeID][1]['description'];
+            if (isset($this->types[$typeID], $this->types[$typeID]['description'])) {
+                $description = $this->types[$typeID]['description'];
                 if (is_callable($description)) {
                     $description = call_user_func($description, $coupon);
                 }
@@ -215,8 +214,8 @@ class Coupons
                 $coupon = $this->get($couponID);
                 if ($coupon !== null) {
                     $typeID = $coupon->typeID;
-                    if (isset($this->types[$typeID])) {
-                        $calculators[] = [$coupon, $this->types[$typeID][0]];
+                    if (isset($this->types[$typeID], $this->types[$typeID]['discountCalculator']) && is_callable($this->types[$typeID]['discountCalculator'])) {
+                        $calculators[] = [$coupon, $this->types[$typeID]['discountCalculator']];
                     }
                     $coupons[] = $coupon;
                 }
