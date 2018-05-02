@@ -20,11 +20,23 @@ class Coupons
     private $cache = [];
     private $types = [];
 
-    public function addType(string $id, callable $calculator, array $options = [])
+    /**
+     * 
+     * @param string $id
+     * @param \BearCMS\BearFrameworkAddons\callable $calculator
+     * @param array $options
+     */
+    public function addType(string $id, callable $calculator, array $options = []): void
     {
         $this->types[$id] = [$calculator, $options];
     }
 
+    /**
+     * 
+     * @param string $typeID
+     * @param string $value
+     * @return \BearCMS\BearFrameworkAddons\Coupons\Coupon
+     */
     public function make(string $typeID = null, string $value = null): \BearCMS\BearFrameworkAddons\Coupons\Coupon
     {
         if (!isset($this->cache['coupon'])) {
@@ -40,12 +52,10 @@ class Coupons
         return $coupon;
     }
 
-    private function getDataKey(string $id): string
-    {
-        $idMD5 = md5($id);
-        return 'bearcms-coupons/coupon/' . substr($idMD5, 0, 2) . '/' . substr($idMD5, 2, 2) . '/' . $idMD5;
-    }
-
+    /**
+     * 
+     * @param \BearCMS\BearFrameworkAddons\Coupons\Coupon $coupon
+     */
     public function save(\BearCMS\BearFrameworkAddons\Coupons\Coupon $coupon): void
     {
         $app = App::get();
@@ -61,6 +71,11 @@ class Coupons
         $app->data->set($app->data->make($this->getDataKey($coupon->id), $coupon->toJSON()));
     }
 
+    /**
+     * 
+     * @param string $id
+     * @return bool
+     */
     public function exists(string $id): bool
     {
         $id = strtolower($id);
@@ -68,6 +83,11 @@ class Coupons
         return $app->data->exists($this->getDataKey($id));
     }
 
+    /**
+     * 
+     * @param string $id
+     * @return null|\BearCMS\BearFrameworkAddons\Coupons\Coupon
+     */
     public function get(string $id): ?\BearCMS\BearFrameworkAddons\Coupons\Coupon
     {
         $id = strtolower($id);
@@ -84,6 +104,11 @@ class Coupons
         return null;
     }
 
+    /**
+     * 
+     * @param type $id
+     * @param type $context
+     */
     public function markAsUsed($id, $context = null)
     {
         $id = strtolower($id);
@@ -99,6 +124,11 @@ class Coupons
         }
     }
 
+    /**
+     * 
+     * @param type $id
+     * @return bool
+     */
     public function isValid($id): bool
     {
         $id = strtolower($id);
@@ -127,6 +157,7 @@ class Coupons
     /**
      * 
      * @param string $couponID
+     * @return string
      */
     public function getDescription(string $couponID): string
     {
@@ -170,7 +201,9 @@ class Coupons
 
     /**
      * 
+     * @param array $couponIDs
      * @param array $items Format: [['id'=>'item1', 'target'=>'target1', 'value'=>10], ...]
+     * @return array Format: ['item1'=>DISCOUNT_VALUE, 'item2'=>DISCOUNT_VALUE]
      */
     public function getDiscount(array $couponIDs, array $items): array
     {
@@ -206,9 +239,20 @@ class Coupons
         return $discounts;
     }
 
-    public function getList()
+//    public function getList()
+//    {
+//        //todo
+//    }
+
+    /**
+     * 
+     * @param string $id
+     * @return string
+     */
+    private function getDataKey(string $id): string
     {
-        //todo
+        $idMD5 = md5($id);
+        return 'bearcms-coupons/coupon/' . substr($idMD5, 0, 2) . '/' . substr($idMD5, 2, 2) . '/' . $idMD5;
     }
 
 }
