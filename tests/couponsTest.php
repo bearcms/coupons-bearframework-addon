@@ -165,9 +165,9 @@ class SenderTest extends BearFrameworkAddonTestCase
         $couponID = $coupon->id;
 
         $this->assertTrue($coupons->isValid($couponID));
-        $coupons->markAsUsed($couponID);
+        $coupons->addUsage($couponID);
         $this->assertTrue($coupons->isValid($couponID));
-        $coupons->markAsUsed($couponID);
+        $coupons->addUsage($couponID);
         $this->assertFalse($coupons->isValid($couponID));
     }
 

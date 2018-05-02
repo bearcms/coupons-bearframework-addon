@@ -106,10 +106,10 @@ class Coupons
 
     /**
      * 
-     * @param type $id
-     * @param type $context
+     * @param string $id
+     * @param mixed $data
      */
-    public function markAsUsed($id, $context = null)
+    public function addUsage(string $id, $data = null)
     {
         $id = strtolower($id);
         $coupon = $this->get($id);
@@ -117,7 +117,7 @@ class Coupons
             $usage = $coupon->usage;
             $usage[] = [
                 'date' => time(),
-                'context' => $context
+                'data' => $data
             ];
             $coupon->usage = $usage;
             $this->save($coupon);
@@ -126,10 +126,10 @@ class Coupons
 
     /**
      * 
-     * @param type $id
+     * @param string $id
      * @return bool
      */
-    public function isValid($id): bool
+    public function isValid(string $id): bool
     {
         $id = strtolower($id);
         $coupon = $this->get($id);
