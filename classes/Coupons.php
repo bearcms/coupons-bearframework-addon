@@ -55,7 +55,7 @@ class Coupons
      * 
      * @param \BearCMS\BearFrameworkAddons\Coupons\Coupon $coupon
      */
-    public function save(\BearCMS\BearFrameworkAddons\Coupons\Coupon $coupon): void
+    public function set(\BearCMS\BearFrameworkAddons\Coupons\Coupon $coupon): void
     {
         $app = App::get();
         if (strlen($coupon->id) === 0) {
@@ -123,7 +123,7 @@ class Coupons
                 'data' => $data
             ];
             $coupon->usage = $usage;
-            $this->save($coupon);
+            $this->set($coupon);
         }
     }
 

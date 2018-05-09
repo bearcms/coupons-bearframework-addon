@@ -55,11 +55,11 @@ class SenderTest extends BearFrameworkAddonTestCase
         $couponIDs = [];
 
         $coupon = $coupons->make('discountFruits', '20%');
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $couponIDs[] = $coupon->id;
 
         $coupon = $coupons->make('discountVegetables', '29%');
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $couponIDs[] = $coupon->id;
 
         $items = [
@@ -93,33 +93,33 @@ class SenderTest extends BearFrameworkAddonTestCase
         ]);
 
         $coupon = $coupons->make('allDiscount', '20%');
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything!');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->startDate = mktime(1, 2, 3, 4, 5, 2018);
         $coupon->endDate = mktime(1, 2, 3, 6, 7, 2018);
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Valid between April 5, 2018 and June 7, 2018.');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->startDate = mktime(1, 2, 3, 4, 5, 2018);
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Valid from April 5, 2018.');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->endDate = mktime(1, 2, 3, 6, 7, 2018);
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Valid until June 7, 2018.');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->usageLimit = 1;
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Can be used only once.');
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->usageLimit = 33;
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $this->assertTrue($coupons->getDescription($coupon->id) === '20% off everything! Can be used 33 times.');
     }
 
@@ -136,7 +136,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->startDate = time() + 2;
         $coupon->endDate = time() + 5;
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $couponID = $coupon->id;
 
         $this->assertFalse($coupons->isValid($couponID));
@@ -158,7 +158,7 @@ class SenderTest extends BearFrameworkAddonTestCase
 
         $coupon = $coupons->make('allDiscount', '20%');
         $coupon->usageLimit = 2;
-        $coupons->save($coupon);
+        $coupons->set($coupon);
         $couponID = $coupon->id;
 
         $this->assertTrue($coupons->isValid($couponID));
@@ -179,7 +179,7 @@ class SenderTest extends BearFrameworkAddonTestCase
         $coupons->addType('allDiscount');
 
         $coupon = $coupons->make('allDiscount', '20%');
-        $coupons->save($coupon);
+        $coupons->set($coupon);
 
         $this->assertFalse($coupons->isValid('INVALID'));
     }
