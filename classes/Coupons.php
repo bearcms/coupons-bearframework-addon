@@ -96,7 +96,11 @@ class Coupons
             $rawData = json_decode($rawData, true);
             $coupon = $this->make();
             foreach ($rawData as $name => $value) {
-                $coupon->$name = $value;
+                if ($name === 'data') {
+                    $coupon->$name = is_array($value) ? $value : [];
+                } else {
+                    $coupon->$name = $value;
+                }
             }
             return $coupon;
         }
