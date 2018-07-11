@@ -3,7 +3,7 @@
 /*
  * Coupons addon for Bear Framework
  * https://github.com/bearcms/coupons-bearframework-addon
- * Copyright (c) 2018 Amplilabs Ltd.
+ * Copyright (c) Amplilabs Ltd.
  * Free to use under the MIT license.
  */
 
