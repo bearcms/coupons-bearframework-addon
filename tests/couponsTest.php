@@ -10,7 +10,7 @@
 /**
  * @runTestsInSeparateProcesses
  */
-class SenderTest extends BearFrameworkAddonTestCase
+class SenderTest extends BearFramework\AddonTests\PHPUnitTestCase
 {
 
     /**
