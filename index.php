@@ -10,11 +10,11 @@
 use BearFramework\App;
 
 $app = App::get();
-$context = $app->context->get(__FILE__);
+$context = $app->contexts->get(__FILE__);
 
 $context->classes
         ->add('BearCMS\BearFrameworkAddons\Coupons', 'classes/Coupons.php')
-        ->add('BearCMS\BearFrameworkAddons\Coupons\Coupon', 'classes/Coupons/Coupon.php');
+        ->add('BearCMS\BearFrameworkAddons\Coupons\*', 'classes/Coupons/*.php');
 
 $app->shortcuts
         ->add('coupons', function() {

@@ -28,30 +28,32 @@ class Coupon
 
     function __construct()
     {
-        $this->defineProperty('id', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('typeID', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('value', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('startDate', [
-            'type' => '?int'
-        ]);
-        $this->defineProperty('endDate', [
-            'type' => '?int'
-        ]);
-        $this->defineProperty('usageLimit', [
-            'type' => '?int'
-        ]);
-        $this->defineProperty('usage', [
-            'type' => 'array'
-        ]);
-        $this->defineProperty('data', [
-            'type' => 'array'
-        ]);
+        $this
+                ->defineProperty('id', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('typeID', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('value', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('startDate', [
+                    'type' => '?int'
+                ])
+                ->defineProperty('endDate', [
+                    'type' => '?int'
+                ])
+                ->defineProperty('usageLimit', [
+                    'type' => '?int'
+                ])
+                ->defineProperty('usage', [
+                    'type' => 'array'
+                ])
+                ->defineProperty('data', [
+                    'type' => 'array'
+                ])
+        ;
     }
 
 }
