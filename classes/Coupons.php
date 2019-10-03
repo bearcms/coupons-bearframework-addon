@@ -41,7 +41,7 @@ class Coupons
         if (!isset($this->cache['coupon'])) {
             $this->cache['coupon'] = new \BearCMS\BearFrameworkAddons\Coupons\Coupon();
         }
-        $coupon = clone($this->cache['coupon']);
+        $coupon = clone ($this->cache['coupon']);
         if ($typeID !== null) {
             $coupon->typeID = $typeID;
         }
@@ -80,6 +80,18 @@ class Coupons
         $id = strtolower($id);
         $app = App::get();
         return $app->data->exists($this->getDataKey($id));
+    }
+
+    /**
+     * 
+     * @param string $id
+     * @return bool
+     */
+    public function delete(string $id): bool
+    {
+        $id = strtolower($id);
+        $app = App::get();
+        return $app->data->delete($this->getDataKey($id));
     }
 
     /**
@@ -242,10 +254,10 @@ class Coupons
         return $discounts;
     }
 
-//    public function getList()
-//    {
-//        //todo
-//    }
+    //    public function getList()
+    //    {
+    //        //todo
+    //    }
 
     /**
      * 
@@ -257,5 +269,4 @@ class Coupons
         $idMD5 = md5($id);
         return 'bearcms-coupons/coupon/' . substr($idMD5, 0, 2) . '/' . substr($idMD5, 2, 2) . '/' . $idMD5;
     }
-
 }
