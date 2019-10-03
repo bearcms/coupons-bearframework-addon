@@ -85,13 +85,13 @@ class Coupons
     /**
      * 
      * @param string $id
-     * @return bool
+     * @return void
      */
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
         $id = strtolower($id);
         $app = App::get();
-        return $app->data->delete($this->getDataKey($id));
+        $app->data->delete($this->getDataKey($id));
     }
 
     /**
