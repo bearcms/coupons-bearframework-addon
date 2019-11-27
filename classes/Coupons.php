@@ -200,7 +200,13 @@ class Coupons
             }
 
             if (strlen($coupon->startDate) > 0 && strlen($coupon->endDate) > 0) {
-                $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.Period'), $app->localization->formatDate($coupon->startDate, ['date']), $app->localization->formatDate($coupon->endDate, ['date']));
+                $formatedStartDate = $app->localization->formatDate($coupon->startDate, ['date']);
+                $formatedEndDate = $app->localization->formatDate($coupon->endDate, ['date']);
+                if ($formatedStartDate === $formatedEndDate) {
+                    $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.Date'), $formatedStartDate);
+                } else {
+                    $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.Period'), $formatedStartDate, $formatedEndDate);
+                }
             } else {
                 if (strlen($coupon->startDate) > 0) {
                     $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.StartDate'), $app->localization->formatDate($coupon->startDate, ['date']));
