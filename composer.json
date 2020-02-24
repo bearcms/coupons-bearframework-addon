@@ -1,7 +1,11 @@
 {
     "name": "bearcms/coupons-bearframework-addon",
     "description": "Coupons addon for Bear Framework",
-    "keywords": ["coupons", "addon", "Bear Framework"],
+    "keywords": [
+        "coupons",
+        "addon",
+        "Bear Framework"
+    ],
     "homepage": "https://github.com/bearcms/coupons-bearframework-addon",
     "license": "MIT",
     "authors": [
@@ -15,13 +19,15 @@
         "php": ">=7.1",
         "bearframework/bearframework": "1.*",
         "bearframework/localization-addon": "0.2.*",
-        "ivopetkov/data-object": "0.7.*"
+        "ivopetkov/data-object": "0.7.*|0.8.*"
     },
     "require-dev": {
         "bearframework/addon-tests": "0.3.*",
         "phpunit/phpunit": "7.*"
     },
     "autoload": {
-        "files": ["autoload.php"]
+        "files": [
+            "autoload.php"
+        ]
     }
 }
