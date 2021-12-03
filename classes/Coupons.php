@@ -58,7 +58,7 @@ class Coupons
     public function set(\BearCMS\BearFrameworkAddons\Coupons\Coupon $coupon): void
     {
         $app = App::get();
-        if (strlen($coupon->id) === 0) {
+        if ($coupon->id === null || strlen($coupon->id) === 0) {
             $id = base_convert(microtime(true) * 10000, 10, 36) . 'x';
             for ($i = 0; $i < 10; $i++) {
                 $id .= str_replace(['x', 'o'], [rand(0, 9), rand(0, 9)], base_convert(rand(1000000, 9999999), 10, 36));
@@ -103,7 +103,7 @@ class Coupons
     {
         $id = strtolower($id);
         $app = App::get();
-        $rawData = $app->data->getValue($this->getDataKey($id));
+        $rawData = (string)$app->data->getValue($this->getDataKey($id));
         if (strlen($rawData) > 0) {
             $rawData = json_decode($rawData, true);
             $coupon = $this->make();
@@ -154,12 +154,12 @@ class Coupons
                     return false;
                 }
             }
-            if (strlen($coupon->startDate) > 0) {
+            if ($coupon->startDate !== null) {
                 if (time() < (int) $coupon->startDate) {
                     return false;
                 }
             }
-            if (strlen($coupon->endDate) > 0) {
+            if ($coupon->endDate !== null) {
                 if (time() > (int) $coupon->endDate) {
                     return false;
                 }
@@ -199,7 +199,7 @@ class Coupons
                 }
             }
 
-            if (strlen($coupon->startDate) > 0 && strlen($coupon->endDate) > 0) {
+            if ($coupon->startDate !== null && $coupon->endDate !== null) {
                 $formatedStartDate = $app->localization->formatDate($coupon->startDate, ['date']);
                 $formatedEndDate = $app->localization->formatDate($coupon->endDate, ['date']);
                 if ($formatedStartDate === $formatedEndDate) {
@@ -208,10 +208,10 @@ class Coupons
                     $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.Period'), $formatedStartDate, $formatedEndDate);
                 }
             } else {
-                if (strlen($coupon->startDate) > 0) {
+                if ($coupon->startDate !== null) {
                     $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.StartDate'), $app->localization->formatDate($coupon->startDate, ['date']));
                 }
-                if (strlen($coupon->endDate) > 0) {
+                if ($coupon->endDate !== null) {
                     $description[] = sprintf(__('bearcms.bearframeworkaddons.coupons.EndDate'), $app->localization->formatDate($coupon->endDate, ['date']));
                 }
             }
