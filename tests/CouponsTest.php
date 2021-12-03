@@ -10,7 +10,7 @@
 /**
  * @runTestsInSeparateProcesses
  */
-class SenderTest extends BearFramework\AddonTests\PHPUnitTestCase
+class CouponsTest extends BearFramework\AddonTests\PHPUnitTestCase
 {
 
     /**
@@ -21,7 +21,7 @@ class SenderTest extends BearFramework\AddonTests\PHPUnitTestCase
         $app = $this->getApp();
         $coupons = $app->coupons;
 
-        $percentDiscountByType = function($itemType, $discount, array $items) {
+        $percentDiscountByType = function ($itemType, $discount, array $items) {
             $result = [];
             foreach ($items as $itemID => $itemData) {
                 if (isset($itemData['type'], $itemData['value']) && $itemData['type'] === $itemType) {
@@ -41,13 +41,13 @@ class SenderTest extends BearFramework\AddonTests\PHPUnitTestCase
         };
 
         $coupons->addType('discountFruits', [
-            'discountCalculator' => function($coupon, array $items) use ($percentDiscountByType) {
+            'discountCalculator' => function ($coupon, array $items) use ($percentDiscountByType) {
                 return $percentDiscountByType('fruit', $coupon->value, $items);
             }
         ]);
 
         $coupons->addType('discountVegetables', [
-            'discountCalculator' => function($coupon, array $items) use ($percentDiscountByType) {
+            'discountCalculator' => function ($coupon, array $items) use ($percentDiscountByType) {
                 return $percentDiscountByType('vegetable', $coupon->value, $items);
             }
         ]);
@@ -87,7 +87,7 @@ class SenderTest extends BearFramework\AddonTests\PHPUnitTestCase
         $coupons = $app->coupons;
 
         $coupons->addType('allDiscount', [
-            'description' => function($coupon) {
+            'description' => function ($coupon) {
                 return $coupon->value . ' off everything!';
             }
         ]);
@@ -183,5 +183,4 @@ class SenderTest extends BearFramework\AddonTests\PHPUnitTestCase
 
         $this->assertFalse($coupons->isValid('INVALID'));
     }
-
 }
