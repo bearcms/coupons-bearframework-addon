@@ -36,7 +36,7 @@ class Coupons
      * @param string $value
      * @return \BearCMS\BearFrameworkAddons\Coupons\Coupon
      */
-    public function make(string $typeID = null, string $value = null): \BearCMS\BearFrameworkAddons\Coupons\Coupon
+    public function make(?string $typeID = null, ?string $value = null): \BearCMS\BearFrameworkAddons\Coupons\Coupon
     {
         if (!isset($this->cache['coupon'])) {
             $this->cache['coupon'] = new \BearCMS\BearFrameworkAddons\Coupons\Coupon();
@@ -150,7 +150,7 @@ class Coupons
         $coupon = $this->get($id);
         if ($coupon instanceof \BearCMS\BearFrameworkAddons\Coupons\Coupon) {
             if (is_int($coupon->usageLimit)) {
-                if (sizeof($coupon->usage) >= $coupon->usageLimit) {
+                if (count($coupon->usage) >= $coupon->usageLimit) {
                     return false;
                 }
             }
